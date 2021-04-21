@@ -1,5 +1,3 @@
-# TODO éves adatok és ipython notebook elemzés
-
 Az elemzés alapjául szolgáló tényadatok a [darksky.net](https://darksky.net/)-oldaltól származnak és a darksky [API](https://darksky.net/dev)-ján keresztül lettek kinyerve.  
 
 > (Az Apple Inc. 2020-ban [felvásárolta](https://edition.cnn.com/2020/03/31/tech/apple-dark-sky/index.html) az oldalt valamint a hozzá tartozó összes alkalmazást, majd nem sokkal később bejelentették hogy 2021-től kezdődően teljesen megszűntetik az API szolgáltatást, illetve [leállítják](https://blog.darksky.net/) az android és iOS applikációkat is.)
@@ -22,3 +20,5 @@ We don't have perfect historical data—weather stations don't cover every squar
 
 ##### Can I get your previous forecasts instead of weather station observations?  
 Unfortunately, we do not have the storage capacity to store previous forecasts. Sorry!  
+
+# TODO +ipython notebook elemzés
