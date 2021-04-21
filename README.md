@@ -4,7 +4,7 @@ Az elemzés alapjául szolgáló tényadatok a [darksky.net](https://darksky.net
 
 > (Az Apple Inc. 2020-ban [felvásárolta](https://edition.cnn.com/2020/03/31/tech/apple-dark-sky/index.html) az oldalt valamint a hozzá tartozó összes alkalmazást, majd nem sokkal később bejelentették hogy 2021-től kezdődően teljesen megszűntetik az API szolgáltatást, illetve [leállítják](https://blog.darksky.net/) az android és iOS applikációkat is.)
 
-A Budapestre vonatkozó csvformátumú éves bontású adatokat a [BP_years]() mappában lehet majd megtalálni.  
+A Budapestre vonatkozó csvformátumú éves bontású adatokat a [BP_years](https://github.com/xngst/Budapest_idojaras_2000-2020/tree/main/BP_years) mappában lehet majd megtalálni.  
 
 Az adatról:
 
