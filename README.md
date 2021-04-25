@@ -21,4 +21,3 @@ We don't have perfect historical data—weather stations don't cover every squar
 ##### Can I get your previous forecasts instead of weather station observations?  
 Unfortunately, we do not have the storage capacity to store previous forecasts. Sorry!  
 
-# TODO +ipython notebook elemzés
