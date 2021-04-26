@@ -1,9 +1,28 @@
-# Budapest Időjárás 2000-2020 elemzés
+# Budapest Weather 2000-2020 analysis
 
-Data analysis and visualisation with pandas  
-https://www.shanelynn.ie/analysis-of-weather-data-using-pandas-python-and-seaborn/
+#### Data Source: 
+https://darksky.net/dev
 
-https://darksky.net/dev/docs
+
+
+#### Data Description: 
+https://darksky.net/dev/docs  
+Data is in SI units as follows:
+
+* summary: Any summaries containing temperature or snow accumulation units will have their values in degrees
+  Celsius or in centimeters (respectively).
+* nearestStormDistance: Kilometers.
+* precipIntensity: Millimeters per hour.
+* precipIntensityMax: Millimeters per hour.
+* temperature: Degrees Celsius.
+* temperatureMin: Degrees Celsius.
+* temperatureMax: Degrees Celsius.
+* apparentTemperature: Degrees Celsius.
+* dewPoint: Degrees Celsius.
+* windSpeed: Meters per second.
+* windGust: Meters per second.
+* pressure: Hectopascals.
+* visibility: Kilometers.
 
 
 ```python
@@ -12,12 +31,9 @@ import time
 from datetime import datetime
 from pathlib import Path
 
-import matplotlib as plt
-import seaborn as sns
 import numpy as np
 import pandas as pd
 import os
-%matplotlib inline
 ```
 
 
@@ -428,7 +444,7 @@ null_df.sort_values(by="null count", ascending=False)
 
 
 
-#### Drop above 50%
+#### Drop columns where above 50% is missing
 
 
 ```python
@@ -437,29 +453,392 @@ all_years.drop(['precipType', 'ozone','precipIntensityMaxTime'],
                inplace=True)
 ```
 
-#### Plot
+### Extreme Weather
+
+#### Highest Temperature max
 
 
 ```python
-all_years.columns
+all_years[all_years["temperatureMax"] == all_years["temperatureMax"].max()][["temperatureMax"]]
 ```
 
 
 
 
-    Index(['date', 'summary', 'sunriseTime', 'moonPhase', 'precipIntensity',
-           'precipIntensityMax', 'precipProbability', 'temperatureHigh',
-           'temperatureHighTime', 'temperatureLow', 'temperatureLowTime',
-           'apparentTemperatureHigh', 'apparentTemperatureHighTime',
-           'apparentTemperatureLowTime', 'apparentTemperatureLow', 'dewPoint',
-           'humidity', 'pressure', 'windSpeed', 'windGust', 'windBearing',
-           'cloudCover', 'uvIndex', 'visibility', 'temperatureMin',
-           'temperatureMinTime', 'temperatureMaxTime', 'temperatureMax',
-           'apparentTemperatureMin', 'apparentTemperatureMinTime',
-           'apparentTemperatureMax', 'apparentTemperatureMaxTime', 'year', 'month',
-           'day', 'dayofweek'],
-          dtype='object')
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>temperatureMax</th>
+    </tr>
+    <tr>
+      <th>date</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2007-07-20</th>
+      <td>40.44</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+temperatureMax_mean = round(all_years["temperatureMax"].mean(), 1)
+temperatureMax_mean
+```
+
+
+
+
+    16.4
+
+
+
+#### Lowest Temperature low
+
+
+```python
+all_years[all_years["temperatureMin"] == all_years["temperatureMin"].min()][["temperatureMin"]]
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>temperatureMin</th>
+    </tr>
+    <tr>
+      <th>date</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2003-01-13</th>
+      <td>-20.61</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+temperatureMin_mean = round(all_years["temperatureMin"].mean(), 1)
+temperatureMin_mean
+```
+
+
+
+
+    7.2
+
+
+
+#### Highest windSpeed (m/s)
+
+
+```python
+all_years[all_years["windSpeed"] == all_years["windSpeed"].max()][["windSpeed"]]
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>windSpeed</th>
+    </tr>
+    <tr>
+      <th>date</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2018-10-24</th>
+      <td>9.66</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+windSpeed_mean = round(all_years["windSpeed"].mean(), 1)
+windSpeed_mean
+```
+
+
+
+
+    2.3
+
+
+
+### Plotting data
+
+
+```python
+import matplotlib.pyplot as plt
+plt.style.use('seaborn-whitegrid')
+
+%matplotlib
+%matplotlib inline
+```
+
+    Using matplotlib backend: Qt5Agg
+
+
+## Comparing same periods of different years
+
+
+```python
+all_years["month_day"] = \
+all_years["date"].dt.month.astype(str) \
++ "." + all_years["date"].dt.day.astype(str)
+```
+
+
+```python
+from_period = '2000-06-01'
+to_period = '2000-08-31'
+```
+
+
+```python
+sommer_2000 = all_years[from_period: to_period].copy()
+sommer_2020 = all_years[from_period: to_period].copy()
+```
+
+#### Comparing Temperature Highs
+
+
+```python
+sommer_2000["temperatureHigh_average"] = \
+(sommer_2000["temperatureHigh"] + sommer_2000["temperatureLow"]) / 2
+sommer_2020["temperatureHigh_average"] = \
+(sommer_2020["temperatureHigh"] + sommer_2020["temperatureLow"]) / 2
+```
+
+
+```python
+fig = plt.figure(figsize=(15,4))
+ax = plt.axes()
+ax.plot(sommer_2000["month_day"],
+        sommer_2000["temperatureHigh"][:], 
+         '-', 
+         color='black',
+         label='temperatureHigh 2000'
+        )
+ax.plot(sommer_2020["month_day"],
+        sommer_2020["temperatureHigh"][:], 
+         '-', 
+         color='grey',
+         label='temperatureHigh 2020'
+        )
+
+ax.plot([sommer_2020["temperatureHigh_average"].mean()] * len(sommer_2020),
+        ":",
+        color='red',
+        label='mean 2020')
+
+ax.plot([sommer_2000["temperatureHigh_average"].mean()] * len(sommer_2000),
+        "--",
+        color='red',
+        label='mean 2000')
+
+ax.tick_params(axis='x', rotation=90)
+
+ax.set(title=f"sommer 2000 & sommer 2020",
+       xlabel='Date', 
+       ylabel='Celsius')
+
+
+ax.legend(bbox_to_anchor=(1.15, 1.2))
+```
+
+
+
+
+    <matplotlib.legend.Legend at 0x7fba7fa79710>
+
+
+
+
+![png](output_35_1.png)
+
+
+#### Comparing Temperature Lows
+
+
+```python
+sommer_2000["temperatureLow_average"] = \
+(sommer_2000["temperatureLow"] + sommer_2000["temperatureLow"]) / 2
+sommer_2020["temperatureLow_average"] = \
+(sommer_2020["temperatureLow"] + sommer_2020["temperatureLow"]) / 2
+```
+
+
+```python
+fig = plt.figure(figsize=(15,4))
+ax = plt.axes()
+ax.plot(sommer_2000["month_day"],
+        sommer_2000["temperatureLow"][:], 
+         '-', 
+         color='grey',
+         label='temperatureLow 2000'
+        )
+ax.plot(sommer_2020["month_day"],
+        sommer_2020["temperatureLow"][:], 
+         '-', 
+         color='black',
+         label='temperatureLow 2020'
+        )
+
+ax.plot([sommer_2020["temperatureLow_average"].mean()] * len(sommer_2020),
+        ":",
+        color='blue',
+        label='mean 2020')
+
+ax.plot([sommer_2000["temperatureLow_average"].mean()] * len(sommer_2000),
+        "--",
+        color='blue',
+        label='mean 2000')
+
+ax.tick_params(axis='x', rotation=90)
+
+ax.set(title=f"temperatureLow sommer 2000 vs sommer 2020",
+       xlabel='Date', 
+       ylabel='Celsius')
+
+
+ax.legend(bbox_to_anchor=(1.15, 1.2))
+```
+
+
+
+
+    <matplotlib.legend.Legend at 0x7fba7ff3ff10>
+
+
+
+
+![png](output_38_1.png)
+
+
+## TODO
+
+
+```python
+rolling_days = 5
+days = 50
+
+fig = plt.figure(figsize=(15,4))
+ax = plt.axes()
+ax.plot(sommer_2000["temperatureHigh"][:], 
+         '-', 
+         color='red',
+         label='temperatureHigh'
+        )
+ax.plot(sommer_2000["temperatureLow"][:], 
+         '-', 
+         color='blue',
+         label='temperatureLow'
+        )
+
+ax.plot(sommer_2000["rolling_high"][:], 
+         ':',
+         color='red',
+         label='rolling_high'
+        )
+
+ax.plot(sommer_2000["rolling_low"][:], 
+         ':', 
+         color='red',
+         label='rolling_low'
+        )
+
+ax.plot([sommer_2000["average"].mean()] * len(sommer_2000),
+        "-",
+        color='blue',
+        label='mean 2000')
+
+ax.tick_params(axis='x', rotation=90)
+
+ax.set(title=f"sommer_2000",
+       xlabel='Date', 
+       ylabel='Celsius')
+
+
+ax.legend(bbox_to_anchor=(1.15, 1.2))
+```
+
+
+
+
+    <matplotlib.legend.Legend at 0x7fba80759c50>
+
+
+
+
+![png](output_40_1.png)
 
 
 
@@ -477,7 +856,7 @@ for year in all_years["year"].unique():
 
 
 
-![png](output_20_1.png)
+![png](output_41_1.png)
 
 
 
