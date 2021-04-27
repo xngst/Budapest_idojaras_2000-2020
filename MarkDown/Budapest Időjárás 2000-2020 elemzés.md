@@ -503,14 +503,14 @@ all_years[all_years["temperatureMax"] == all_years["temperatureMax"].max()][["te
 
 
 ```python
-temperatureMax_mean = round(all_years["temperatureMax"].mean(), 1)
-temperatureMax_mean
+temperatureMax_mean = all_years["temperatureMax"].mean()
+f"mean: {temperatureMax_mean:.2f}"
 ```
 
 
 
 
-    16.4
+    'mean: 16.39'
 
 
 
@@ -563,13 +563,13 @@ all_years[all_years["temperatureMin"] == all_years["temperatureMin"].min()][["te
 
 ```python
 temperatureMin_mean = round(all_years["temperatureMin"].mean(), 1)
-temperatureMin_mean
+f"mean: {temperatureMin_mean:.2f}"
 ```
 
 
 
 
-    7.2
+    'mean: 7.20'
 
 
 
@@ -622,17 +622,17 @@ all_years[all_years["windSpeed"] == all_years["windSpeed"].max()][["windSpeed"]]
 
 ```python
 windSpeed_mean = round(all_years["windSpeed"].mean(), 1)
-windSpeed_mean
+f"mean: {windSpeed_mean:.2f}"
 ```
 
 
 
 
-    2.3
+    'mean: 2.30'
 
 
 
-### Plotting data
+## Plotting data
 
 
 ```python
@@ -646,78 +646,96 @@ plt.style.use('seaborn-whitegrid')
     Using matplotlib backend: Qt5Agg
 
 
-## Comparing same periods of different years
+### Comparing same periods of different years
 
 
 ```python
-all_years["month_day"] = \
-all_years["date"].dt.month.astype(str) \
+all_years["month_day"] = all_years["date"].dt.month.astype(str) \
 + "." + all_years["date"].dt.day.astype(str)
 ```
 
 
 ```python
-from_period = '2000-06-01'
-to_period = '2000-08-31'
+year1 = '2015'
+year2 = '2020'
+
+start_period = '06-01'
+end_period = '08-31'
+
+year_1_df = all_years[f'{year1}-{start_period}': f'{year1}-{end_period}'].copy()
+year_2_df = all_years[f'{year2}-{start_period}': f'{year2}-{end_period}'].copy()
 ```
 
 
 ```python
-sommer_2000 = all_years[from_period: to_period].copy()
-sommer_2020 = all_years[from_period: to_period].copy()
+year1_th_null_values = year_1["temperatureHigh"].isnull().sum()
+year1_th_null_values = year_2["temperatureHigh"].isnull().sum()
+print(f"{year1} count of null values: {year1_th_null_values}")
+print(f"{year2} count of null values: {year1_th_null_values}")
 ```
 
-#### Comparing Temperature Highs
+    2015 count of null values: 0
+    2020 count of null values: 0
+
+
+### Comparing Temperature Highs
 
 
 ```python
-sommer_2000["temperatureHigh_average"] = \
-(sommer_2000["temperatureHigh"] + sommer_2000["temperatureLow"]) / 2
-sommer_2020["temperatureHigh_average"] = \
-(sommer_2020["temperatureHigh"] + sommer_2020["temperatureLow"]) / 2
+year_1_temp_high_mean = year_1["temperatureHigh"].mean()
+year_2_temp_high_mean = year_2["temperatureHigh"].mean()
+
+print(f"{year1} summer temperatureHigh mean: {year_1_temp_high_mean:.2f} C")
+print(f"{year2} summer temperatureHigh mean: {year_2_temp_high_mean:.2f} C")
 ```
+
+    2015 summer temperatureHigh mean: 28.83 C
+    2020 summer temperatureHigh mean: 27.83 C
+
 
 
 ```python
-fig = plt.figure(figsize=(15,4))
+fig = plt.figure(figsize=(14,4))
 ax = plt.axes()
-ax.plot(sommer_2000["month_day"],
-        sommer_2000["temperatureHigh"][:], 
-         '-', 
-         color='black',
-         label='temperatureHigh 2000'
-        )
-ax.plot(sommer_2020["month_day"],
-        sommer_2020["temperatureHigh"][:], 
+ax.plot(year_1_df["month_day"],
+        year_1_df["temperatureHigh"], 
          '-', 
          color='grey',
-         label='temperatureHigh 2020'
+         label=f'temperatureHigh {year1}'
+        )
+ax.plot(year_2_df["month_day"],
+        year_2_df["temperatureHigh"], 
+         '-', 
+         color='black',
+         label=f'temperatureHigh {year2}'
         )
 
-ax.plot([sommer_2020["temperatureHigh_average"].mean()] * len(sommer_2020),
+ax.plot([year_1_temp_high_mean] * len(year_1_df),
         ":",
         color='red',
-        label='mean 2020')
+        label=f'temperatureHigh mean {year1}'
+       )
 
-ax.plot([sommer_2000["temperatureHigh_average"].mean()] * len(sommer_2000),
+ax.plot([year_2_temp_high_mean] * len(year_2_df),
         "--",
-        color='red',
-        label='mean 2000')
+        color='green',
+        label=f'temperatureHigh mean {year2}'
+       )
 
 ax.tick_params(axis='x', rotation=90)
 
-ax.set(title=f"sommer 2000 & sommer 2020",
+ax.set(title=f"summer {year1} vs summer {year2}",
        xlabel='Date', 
        ylabel='Celsius')
 
 
-ax.legend(bbox_to_anchor=(1.15, 1.2))
+ax.legend(bbox_to_anchor=(1.2, 1.3))
 ```
 
 
 
 
-    <matplotlib.legend.Legend at 0x7fba7fa79710>
+    <matplotlib.legend.Legend at 0x7f2d72dc7190>
 
 
 
@@ -725,141 +743,183 @@ ax.legend(bbox_to_anchor=(1.15, 1.2))
 ![png](output_35_1.png)
 
 
-#### Comparing Temperature Lows
+### Comparing Temperature Lows
 
 
 ```python
-sommer_2000["temperatureLow_average"] = \
-(sommer_2000["temperatureLow"] + sommer_2000["temperatureLow"]) / 2
-sommer_2020["temperatureLow_average"] = \
-(sommer_2020["temperatureLow"] + sommer_2020["temperatureLow"]) / 2
+year1_tl_null_values = year_1["temperatureLow"].isnull().sum()
+year2_tl_null_values = year_2["temperatureLow"].isnull().sum()
+print(f"{year1} count of null values: {year1_tl_null_values}")
+print(f"{year2} count of null values: {year2_tl_null_values}")
 ```
 
+    2015 count of null values: 0
+    2020 count of null values: 0
+
+
 
 ```python
-fig = plt.figure(figsize=(15,4))
+year_1_temp_low_mean = year_1["temperatureLow"].mean()
+year_2_temp_low_mean = year_2["temperatureLow"].mean()
+
+print(f"{year1} summer temperatureLow mean: {year_1_temp_low_mean:.2f} C")
+print(f"{year2} summer temperatureLow mean: {year_2_temp_low_mean:.2f} C")
+```
+
+    2015 summer temperatureLow mean: 16.99 C
+    2020 summer temperatureLow mean: 18.27 C
+
+
+
+```python
+fig = plt.figure(figsize=(14,4))
 ax = plt.axes()
-ax.plot(sommer_2000["month_day"],
-        sommer_2000["temperatureLow"][:], 
+ax.plot(year_1_df["month_day"],
+        year_1_df["temperatureLow"], 
          '-', 
          color='grey',
-         label='temperatureLow 2000'
+         label=f'temperatureLow {year1}'
         )
-ax.plot(sommer_2020["month_day"],
-        sommer_2020["temperatureLow"][:], 
+ax.plot(year_2_df["month_day"],
+        year_2_df["temperatureLow"], 
          '-', 
          color='black',
-         label='temperatureLow 2020'
+         label=f'temperatureLow {year2}'
         )
 
-ax.plot([sommer_2020["temperatureLow_average"].mean()] * len(sommer_2020),
+ax.plot([year_1_temp_low_mean] * len(year_1_df),
         ":",
-        color='blue',
-        label='mean 2020')
+        color='red',
+        label=f'temperatureLow mean {year1}'
+       )
 
-ax.plot([sommer_2000["temperatureLow_average"].mean()] * len(sommer_2000),
+ax.plot([year_2_temp_low_mean] * len(year_2_df),
         "--",
-        color='blue',
-        label='mean 2000')
+        color='green',
+        label=f'temperatureLow mean {year2}'
+       )
 
 ax.tick_params(axis='x', rotation=90)
 
-ax.set(title=f"temperatureLow sommer 2000 vs sommer 2020",
+ax.set(title=f"summer {year1} vs summer {year2}",
        xlabel='Date', 
        ylabel='Celsius')
 
 
-ax.legend(bbox_to_anchor=(1.15, 1.2))
+ax.legend(bbox_to_anchor=(1.2, 1.3))
 ```
 
 
 
 
-    <matplotlib.legend.Legend at 0x7fba7ff3ff10>
+    <matplotlib.legend.Legend at 0x7f2d72c33890>
 
 
 
 
-![png](output_38_1.png)
+![png](output_39_1.png)
 
 
-## TODO
+### Comparing precipIntensity
+
+precipIntensity measure unit: Millimeters per hour
 
 
 ```python
-rolling_days = 5
-days = 50
+all_years["precipIntensity"].describe()
+```
 
-fig = plt.figure(figsize=(15,4))
+
+
+
+    count    5089.000000
+    mean        0.060715
+    std         0.395774
+    min         0.000000
+    25%         0.000000
+    50%         0.000000
+    75%         0.008300
+    max        11.334000
+    Name: precipIntensity, dtype: float64
+
+
+
+
+```python
+year1_pi_null_values = year_1["precipIntensity"].isnull().sum()
+year2_pi_null_values = year_2["precipIntensity"].isnull().sum()
+print(f"{year1} count of null values: {year1_tl_null_values}")
+print(f"{year2} count of null values: {year2_tl_null_values}")
+```
+
+    2015 count of null values: 0
+    2020 count of null values: 0
+
+
+
+```python
+year_1_precipIntensity_mean = year_1["precipIntensity"].mean()
+year_2_precipIntensity_mean = year_2["precipIntensity"].mean()
+
+print(f"{year1} summer precipIntensity mean: {year_1_precipIntensity_mean:.2f} Millimeters per hour")
+print(f"{year2} summer precipIntensity mean: {year_2_precipIntensity_mean:.2f} Millimeters per hour")
+```
+
+    2015 summer precipIntensity mean: 0.03 Millimeters per hour
+    2020 summer precipIntensity mean: 0.10 Millimeters per hour
+
+
+
+```python
+fig = plt.figure(figsize=(14,4))
 ax = plt.axes()
-ax.plot(sommer_2000["temperatureHigh"][:], 
-         '-', 
-         color='red',
-         label='temperatureHigh'
-        )
-ax.plot(sommer_2000["temperatureLow"][:], 
-         '-', 
-         color='blue',
-         label='temperatureLow'
-        )
+ax.bar(year_1_df["month_day"], 
+       year_1_df["precipIntensity"],
+       color='blue',
+       label=f'precipIntensity {year1}',
+       alpha=0.5
+       )
 
-ax.plot(sommer_2000["rolling_high"][:], 
-         ':',
-         color='red',
-         label='rolling_high'
-        )
+ax.bar(year_2_df["month_day"], 
+       year_2_df["precipIntensity"],
+       color='green',
+       label=f'precipIntensity {year2}',
+       alpha=0.5
+       )
 
-ax.plot(sommer_2000["rolling_low"][:], 
-         ':', 
-         color='red',
-         label='rolling_low'
-        )
+ax.plot([year_1_precipIntensity_mean] * len(year_1_df),
+        ":",
+        color='black',
+        label=f'precipIntensity mean {year1}'
+       )
 
-ax.plot([sommer_2000["average"].mean()] * len(sommer_2000),
-        "-",
-        color='blue',
-        label='mean 2000')
+ax.plot([year_2_precipIntensity_mean] * len(year_2_df),
+        "--",
+        color='black',
+        label=f'precipIntensity mean {year1}'
+       )
 
-ax.tick_params(axis='x', rotation=90)
+ax.tick_params(axis='x',rotation=90)
 
-ax.set(title=f"sommer_2000",
+ax.set(title=f"summer {year1} vs summer {year2}",
        xlabel='Date', 
        ylabel='Celsius')
 
-
-ax.legend(bbox_to_anchor=(1.15, 1.2))
+ax.legend(bbox_to_anchor=(1.2, 1.3))
 ```
 
 
 
 
-    <matplotlib.legend.Legend at 0x7fba80759c50>
+    <matplotlib.legend.Legend at 0x7f2d6feb5950>
 
 
 
 
-![png](output_40_1.png)
-
-
-
-```python
-for year in all_years["year"].unique():
-    all_years[all_years["year"] == year]["temperatureHigh"].plot(figsize=(100,20))
-    #ax = all_years[all_years["year"] == year]["temperatureHigh"].plot(figsize=(100,20))
-    
-#fig = ax.get_figure()
-#fig.savefig(IN_DIR/'windSpeed_figure.pdf')
-```
-
-    /home/xunguist/anaconda3/lib/python3.7/site-packages/pandas/plotting/_matplotlib/core.py:1182: UserWarning: FixedFormatter should only be used together with FixedLocator
-      ax.set_xticklabels(xticklabels)
-
-
-
-![png](output_41_1.png)
+![png](output_44_1.png)
 
 
 
 ```python
-#More to come
+
 ```
