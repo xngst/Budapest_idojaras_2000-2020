@@ -1,11 +1,14 @@
-Az elemzés alapjául szolgáló tényadatok a [darksky.net](https://darksky.net/)-oldaltól származnak és a darksky [API](https://darksky.net/dev)-ján keresztül lettek kinyerve.  
 
-> (Az Apple Inc. 2020-ban [felvásárolta](https://edition.cnn.com/2020/03/31/tech/apple-dark-sky/index.html) az oldalt valamint a hozzá tartozó összes alkalmazást, majd nem sokkal később bejelentették hogy 2021-től kezdődően teljesen megszűntetik az API szolgáltatást, illetve [leállítják](https://blog.darksky.net/) az android és iOS applikációkat is.)
+### Data Description:
 
-A Budapestre vonatkozó csvformátumú éves bontású adatokat a [BP_years](https://github.com/xngst/Budapest_idojaras_2000-2020/tree/main/BP_years) mappában lehet majd megtalálni.  
+The data used for the analysis comes from [darksky.net](https://darksky.net/) and has been extracted through the [Darksky API](https://darksky.net/dev).
 
-Data Description:
-https://darksky.net/dev/docs
+> (In 2020 Q1 Apple Inc had [aquired](https://edition.cnn.com/2020/03/31/tech/apple-dark-sky/index.html) darksky.net. Shortly after the aquasition, Apple announced that every darksky.net connected application and the API will be [shut down](https://blog.darksky.net/) effetctive from 2021). There is a short transition period, in 2020 the API funcionality is avaliable, however no new subscriptions are accepted. Therefore past 2021 it won't be possible any more to aquire any dataset via the [Darksky API](https://darksky.net/dev).
+
+The Budapest Waether Data for 2000-2020 is available under [BP_years](https://github.com/xngst/Budapest_idojaras_2000-2020/tree/main/BP_years)
+
+
+### Units used in dataset
 Data is in SI units as follows:
 
 * summary: Any summaries containing temperature or snow accumulation units will have their values in degrees Celsius or in centimeters (respectively).
