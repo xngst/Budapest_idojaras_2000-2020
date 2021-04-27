@@ -8,19 +8,19 @@ Data Description:
 https://darksky.net/dev/docs
 Data is in SI units as follows:
 
-summary: Any summaries containing temperature or snow accumulation units will have their values in degrees Celsius or in centimeters (respectively).
-nearestStormDistance: Kilometers.
-precipIntensity: Millimeters per hour.
-precipIntensityMax: Millimeters per hour.
-temperature: Degrees Celsius.
-temperatureMin: Degrees Celsius.
-temperatureMax: Degrees Celsius.
-apparentTemperature: Degrees Celsius.
-dewPoint: Degrees Celsius.
-windSpeed: Meters per second.
-windGust: Meters per second.
-pressure: Hectopascals.
-visibility: Kilometers.
+* summary: Any summaries containing temperature or snow accumulation units will have their values in degrees Celsius or in centimeters (respectively).
+* nearestStormDistance: Kilometers.
+* precipIntensity: Millimeters per hour.
+* precipIntensityMax: Millimeters per hour.
+* temperature: Degrees Celsius.
+* temperatureMin: Degrees Celsius.
+* temperatureMax: Degrees Celsius.
+* apparentTemperature: Degrees Celsius.
+* dewPoint: Degrees Celsius.
+* windSpeed: Meters per second.
+* windGust: Meters per second.
+* pressure: Hectopascals.
+* visibility: Kilometers.
 
 ##### Are historical reports based on observational data?  
 Usually, but we sometimes fill in data from other sources if no observations are available.  
