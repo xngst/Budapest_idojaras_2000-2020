@@ -5,7 +5,7 @@ The data used for the analysis comes from [darksky.net](https://darksky.net/) an
 
 > (In 2020 Q1 Apple Inc had [aquired](https://edition.cnn.com/2020/03/31/tech/apple-dark-sky/index.html) darksky.net. Shortly after the aquasition, Apple announced that every darksky.net connected application and the API will be [shut down](https://blog.darksky.net/) effetctive from 2021). There is a short transition period, in 2020 the API funcionality is avaliable, however no new subscriptions are accepted. Therefore past 2021 it won't be possible any more to aquire any dataset via the [Darksky API](https://darksky.net/dev).
 
-The Budapest Waether Data for 2000-2020 is available under [BP_years](https://github.com/xngst/Budapest_idojaras_2000-2020/tree/main/BP_years)
+The Budapest Weather Data for 2000-2020 is available under [BP_years](https://github.com/xngst/Budapest_idojaras_2000-2020/tree/main/BP_years)
 
 
 ### Units used in dataset
@@ -24,6 +24,8 @@ Data is in SI units as follows:
 * windGust: Meters per second.
 * pressure: Hectopascals.
 * visibility: Kilometers.
+
+### FAQ From [Darksky API](https://darksky.net/dev):
 
 ##### Are historical reports based on observational data?  
 Usually, but we sometimes fill in data from other sources if no observations are available.  
