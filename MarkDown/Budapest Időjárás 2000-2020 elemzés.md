@@ -637,7 +637,7 @@ f"mean: {windSpeed_mean:.2f}"
 
 ```python
 import matplotlib.pyplot as plt
-plt.style.use('seaborn-whitegrid')
+plt.style.use('seaborn-notebook')
 
 %matplotlib
 %matplotlib inline
@@ -668,8 +668,8 @@ year_2_df = all_years[f'{year2}-{start_period}': f'{year2}-{end_period}'].copy()
 
 
 ```python
-year1_th_null_values = year_1["temperatureHigh"].isnull().sum()
-year1_th_null_values = year_2["temperatureHigh"].isnull().sum()
+year1_th_null_values = year_1_df["temperatureHigh"].isnull().sum()
+year1_th_null_values = year_2_df["temperatureHigh"].isnull().sum()
 print(f"{year1} count of null values: {year1_th_null_values}")
 print(f"{year2} count of null values: {year1_th_null_values}")
 ```
@@ -682,8 +682,8 @@ print(f"{year2} count of null values: {year1_th_null_values}")
 
 
 ```python
-year_1_temp_high_mean = year_1["temperatureHigh"].mean()
-year_2_temp_high_mean = year_2["temperatureHigh"].mean()
+year_1_temp_high_mean = year_1_df["temperatureHigh"].mean()
+year_2_temp_high_mean = year_2_df["temperatureHigh"].mean()
 
 print(f"{year1} summer temperatureHigh mean: {year_1_temp_high_mean:.2f} C")
 print(f"{year2} summer temperatureHigh mean: {year_2_temp_high_mean:.2f} C")
@@ -726,7 +726,7 @@ ax.tick_params(axis='x', rotation=90)
 
 ax.set(title=f"summer {year1} vs summer {year2}",
        xlabel='Date', 
-       ylabel='Celsius')
+       ylabel='Temperature (°C)')
 
 
 ax.legend(bbox_to_anchor=(1.2, 1.3))
@@ -735,7 +735,7 @@ ax.legend(bbox_to_anchor=(1.2, 1.3))
 
 
 
-    <matplotlib.legend.Legend at 0x7f2d72dc7190>
+    <matplotlib.legend.Legend at 0x7f2af158f350>
 
 
 
@@ -747,8 +747,8 @@ ax.legend(bbox_to_anchor=(1.2, 1.3))
 
 
 ```python
-year1_tl_null_values = year_1["temperatureLow"].isnull().sum()
-year2_tl_null_values = year_2["temperatureLow"].isnull().sum()
+year1_tl_null_values = year_1_df["temperatureLow"].isnull().sum()
+year2_tl_null_values = year_2_df["temperatureLow"].isnull().sum()
 print(f"{year1} count of null values: {year1_tl_null_values}")
 print(f"{year2} count of null values: {year2_tl_null_values}")
 ```
@@ -759,8 +759,8 @@ print(f"{year2} count of null values: {year2_tl_null_values}")
 
 
 ```python
-year_1_temp_low_mean = year_1["temperatureLow"].mean()
-year_2_temp_low_mean = year_2["temperatureLow"].mean()
+year_1_temp_low_mean = year_1_df["temperatureLow"].mean()
+year_2_temp_low_mean = year_2_df["temperatureLow"].mean()
 
 print(f"{year1} summer temperatureLow mean: {year_1_temp_low_mean:.2f} C")
 print(f"{year2} summer temperatureLow mean: {year_2_temp_low_mean:.2f} C")
@@ -803,7 +803,7 @@ ax.tick_params(axis='x', rotation=90)
 
 ax.set(title=f"summer {year1} vs summer {year2}",
        xlabel='Date', 
-       ylabel='Celsius')
+       ylabel='Temperature (°C)')
 
 
 ax.legend(bbox_to_anchor=(1.2, 1.3))
@@ -812,7 +812,7 @@ ax.legend(bbox_to_anchor=(1.2, 1.3))
 
 
 
-    <matplotlib.legend.Legend at 0x7f2d72c33890>
+    <matplotlib.legend.Legend at 0x7f2ae93b7110>
 
 
 
@@ -846,8 +846,8 @@ all_years["precipIntensity"].describe()
 
 
 ```python
-year1_pi_null_values = year_1["precipIntensity"].isnull().sum()
-year2_pi_null_values = year_2["precipIntensity"].isnull().sum()
+year1_pi_null_values = year_1_df["precipIntensity"].isnull().sum()
+year2_pi_null_values = year_2_df["precipIntensity"].isnull().sum()
 print(f"{year1} count of null values: {year1_tl_null_values}")
 print(f"{year2} count of null values: {year2_tl_null_values}")
 ```
@@ -858,8 +858,8 @@ print(f"{year2} count of null values: {year2_tl_null_values}")
 
 
 ```python
-year_1_precipIntensity_mean = year_1["precipIntensity"].mean()
-year_2_precipIntensity_mean = year_2["precipIntensity"].mean()
+year_1_precipIntensity_mean = year_1_df["precipIntensity"].mean()
+year_2_precipIntensity_mean = year_2_df["precipIntensity"].mean()
 
 print(f"{year1} summer precipIntensity mean: {year_1_precipIntensity_mean:.2f} Millimeters per hour")
 print(f"{year2} summer precipIntensity mean: {year_2_precipIntensity_mean:.2f} Millimeters per hour")
@@ -903,7 +903,7 @@ ax.tick_params(axis='x',rotation=90)
 
 ax.set(title=f"summer {year1} vs summer {year2}",
        xlabel='Date', 
-       ylabel='Celsius')
+       ylabel='Precipitation (mm)')
 
 ax.legend(bbox_to_anchor=(1.2, 1.3))
 ```
@@ -911,12 +911,337 @@ ax.legend(bbox_to_anchor=(1.2, 1.3))
 
 
 
-    <matplotlib.legend.Legend at 0x7f2d6feb5950>
+    <matplotlib.legend.Legend at 0x7f2ae8071fd0>
 
 
 
 
 ![png](output_44_1.png)
+
+
+### Plotting Range
+
+
+```python
+year_1_df = all_years[f'{year1}-{start_period}': f'{year1}-{end_period}'].copy()
+year_2_df = all_years[f'{year2}-{start_period}': f'{year2}-{end_period}'].copy()
+```
+
+
+```python
+year_1_df["temp_range"] = year_1_df["temperatureHigh"] - year_1_df["temperatureLow"]
+```
+
+
+```python
+fig = plt.figure(figsize=(14,4))
+ax = plt.axes()
+
+ax.plot(year_1_df["month_day"],
+        year_1_df["temperatureHigh"], 
+         '-', 
+         color='red',
+         label=f'temperatureHigh {year1}'
+        )
+
+ax.plot(year_1_df["month_day"],
+        year_1_df["temperatureLow"], 
+         '-', 
+         color='blue',
+         label=f'temperatureLow {year1}'
+        )
+
+plt.fill_between(year_1_df["month_day"],
+                 year_1_df["temperatureHigh"],
+                 year_1_df["temperatureLow"], 
+                 color="yellow",
+                 alpha=0.3)
+
+ax.tick_params(axis='x', rotation=90)
+
+ax.set(title=f"summer {year1} temperature range",
+       xlabel='Date', 
+       ylabel='Temperature (°C)')
+
+
+ax.legend(loc='lower right', frameon=False)
+```
+
+
+
+
+    <matplotlib.legend.Legend at 0x7f2ae3729fd0>
+
+
+
+
+![png](output_48_1.png)
+
+
+
+```python
+plt.style.use('seaborn-notebook')
+
+fig, ax = plt.subplots(2,figsize=(15,5))
+
+ax[0].plot(year_1_df["month_day"],
+        year_1_df["temperatureHigh"], 
+         '-', 
+         color='red',
+         label=f'temperatureHigh {year1}'
+        )
+
+ax[0].plot(year_1_df["month_day"],
+        year_1_df["temperatureLow"], 
+         '-', 
+         color='blue',
+         label=f'temperatureLow {year1}'
+        )
+
+ax[1].bar(year_1_df["month_day"], 
+       year_1_df["temp_range"],
+       color='green',
+       label=f'temperature range {year1}',
+       alpha=0.5
+       )
+
+ax[1].plot(year_1_df["month_day"],
+           [year_1_df["temp_range"].mean()] * len(year_1_df), 
+           '-', 
+           color='black',
+           label=f'mean temperature range {year1}'
+          )
+
+ax[0].tick_params(axis='x', rotation=90)
+
+ax[0].set(title=f"summer {year1} temperature range",
+       xlabel='Date', 
+       ylabel='Temperature (°C)')
+
+
+ax[1].tick_params(axis='x', rotation=90)
+ax[1].set(xlabel='Date', ylabel='Temperature (°C)')
+
+
+ax[0].legend(loc='upper left', frameon=False)
+ax[1].legend(loc='upper left', frameon=False)
+```
+
+
+
+
+    <matplotlib.legend.Legend at 0x7f2ae346ff10>
+
+
+
+
+![png](output_49_1.png)
+
+
+## [Climograph](https://en.wikipedia.org/wiki/Climograph)
+
+A climograph is a graphical representation of a location's basic climate.  
+Climographs display data for two variables:   
+(a) monthly average temperature and  
+(b) monthly average precipitation.  
+These are useful tools to quickly describe a location's climate.   
+
+Expected values: https://hu.wikipedia.org/wiki/Budapest  
+Original Source: https://www.met.hu/  
+
+
+```python
+plt.style.use('seaborn-white')
+```
+
+
+```python
+year_df = all_years["2020-01-01":"2020-12-31"].copy()
+
+year_df.loc[:,"month_name"] = year_df.loc[:,"date"].dt.month_name()
+year_average = year_df.groupby("month").mean()[["temperatureHigh","temperatureLow"]]
+year_average.loc[:,"temp_average"] = (year_average.loc[:,"temperatureHigh"] \
+                                      + year_average.loc[:,"temperatureLow"]) / 2
+year_sum = year_df.groupby("month").sum()[["precipIntensity"]]
+year_average.index = year_df["month_name"].unique()
+year_sum.index = year_df["month_name"].unique()
+
+fig = plt.figure(figsize=(14,6))
+fig.patch.set_alpha(0)
+ax = plt.axes()
+
+ax.plot(year_sum.index,
+        [1.1,2.0,6.5,12.8,17.0,20.4,22.5,22.9,17.0,12.1,5.4,0.9], 
+         '-o', 
+        color='black',
+        label=f'expected average temperature {year_df.loc[:,"date"].dt.year[0]}',
+        linewidth=2,
+        alpha=0.6
+        )
+
+ax.plot(year_average["temp_average"], 
+         '-o', 
+        color='red',
+        label=f'observed average temperature {year_df.loc[:,"date"].dt.year[0]}',
+        linewidth=2,
+        alpha=1
+        )
+
+ax2=ax.twinx()
+ax2.set_ylabel('Precipitation (mm)')
+
+
+ax2.bar(year_sum.index, 
+       [34, 28, 31, 38, 59, 64, 45, 52, 41, 35, 49, 40],
+       color='black',
+       label=f'expected precipitation average (mm)',
+       alpha=0.5
+       )
+
+ax2.bar(year_sum.index, 
+       year_sum["precipIntensity"]*24,
+       color='blue',
+       label=f'observed precipitation average (mm)',
+        alpha=0.6
+       )
+
+ax.tick_params(axis='x', rotation=45)
+
+ax.set_xlabel(f'{year_df.loc[:,"date"].dt.year[0]}')
+ax.set_ylabel('Temperature average(°C)')
+ax.set_title(f'Budapest Climograph for {year_df.loc[:,"date"].dt.year[0]}')
+
+l1 = ax.legend(loc='upper left', frameon=False)
+l2 = ax2.legend(loc='upper right', frameon=False)
+
+plt.setp(l1.get_texts(), color='black')
+plt.setp(l2.get_texts(), color='black')
+
+ax.grid(False)
+ax2.grid(False)
+
+plt.ylim(0, 150)
+```
+
+
+
+
+    (0.0, 150.0)
+
+
+
+
+![png](output_53_1.png)
+
+
+
+```python
+year_average
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>temperatureHigh</th>
+      <th>temperatureLow</th>
+      <th>temp_average</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>January</th>
+      <td>4.255806</td>
+      <td>-1.297097</td>
+      <td>1.479355</td>
+    </tr>
+    <tr>
+      <th>February</th>
+      <td>10.994483</td>
+      <td>3.305517</td>
+      <td>7.150000</td>
+    </tr>
+    <tr>
+      <th>March</th>
+      <td>13.470000</td>
+      <td>4.021935</td>
+      <td>8.745968</td>
+    </tr>
+    <tr>
+      <th>April</th>
+      <td>20.085333</td>
+      <td>8.468333</td>
+      <td>14.276833</td>
+    </tr>
+    <tr>
+      <th>May</th>
+      <td>20.594194</td>
+      <td>11.270968</td>
+      <td>15.932581</td>
+    </tr>
+    <tr>
+      <th>June</th>
+      <td>24.877333</td>
+      <td>16.768333</td>
+      <td>20.822833</td>
+    </tr>
+    <tr>
+      <th>July</th>
+      <td>28.099032</td>
+      <td>17.997097</td>
+      <td>23.048065</td>
+    </tr>
+    <tr>
+      <th>August</th>
+      <td>30.425161</td>
+      <td>20.005161</td>
+      <td>25.215161</td>
+    </tr>
+    <tr>
+      <th>September</th>
+      <td>25.926333</td>
+      <td>15.222333</td>
+      <td>20.574333</td>
+    </tr>
+    <tr>
+      <th>October</th>
+      <td>17.046452</td>
+      <td>9.516129</td>
+      <td>13.281290</td>
+    </tr>
+    <tr>
+      <th>November</th>
+      <td>9.701667</td>
+      <td>3.902667</td>
+      <td>6.802167</td>
+    </tr>
+    <tr>
+      <th>December</th>
+      <td>6.974194</td>
+      <td>2.500645</td>
+      <td>4.737419</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
 
 
 
